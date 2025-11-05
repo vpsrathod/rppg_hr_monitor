@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 temp_video*.mp4
 *.log
+# Ignore model file
+best_rppg_model.h5
+*.h5

@@ -6,8 +6,8 @@ import numpy as np
 import time
 
 def main():
-    st.set_page_config(page_title="VIRTUON AI Health Monitor", page_icon="❤️", layout="wide")
-    st.title("VIRTUON AI Health Monitor")
+    st.set_page_config(page_title="HeartVision AI Heart-Rate Monitor", page_icon="❤️", layout="wide")
+    st.title("HeartVision AI Heart-Rate Monitor")
     st.markdown("Upload a video to monitor heart rate and blood pressure using rPPG technology.")
 
     # Session state initialization

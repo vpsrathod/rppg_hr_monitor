@@ -45,9 +45,9 @@ def generate_final_report(processor, session_duration):
 
     # PDF report
     pdf_buffer = io.BytesIO()
-    with PdfPages(pdf_buffer) as pdf:
+    with PdfPages(pdf_buffer) as pdf:  
         pdf_fig = plt.figure(figsize=(8.5, 11))
-        plt.text(0.5, 0.97, "VIRTUON AI - Vital Signs Report", ha='center', fontsize=16, weight='bold', color='darkblue')
+        plt.text(0.5, 0.97, "HeartVision AI - Vital Signs Report", ha='center', fontsize=16, weight='bold', color='darkblue')
         plt.text(0.1, 0.90, f"Monitoring Period: {report['timestamp']}", fontsize=10)
         table_data = [
             ["Parameter", "Your Value", "Normal Range"],

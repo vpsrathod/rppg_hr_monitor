@@ -1,3 +1,4 @@
+import os # -for checking model 
 import cv2
 import numpy as np
 import tensorflow as tf
@@ -8,6 +9,63 @@ from collections import deque
 import time
 import io
 import streamlit as st
+import gdown # new import for g-drive
+import sys
+from io import StringIO
+import contextlib
+
+# -----
+# Secure Model Loader
+# -----
+
+@st.cache_resource
+def load_rppg_model():
+    """Download model from Google Drive if not Found Locally, then Load it."""
+    
+    MODEL_PATH = "best_rppg_model.h5"
+    
+    # Check if model exists first - skip download
+    if os.path.exists(MODEL_PATH):
+        st.info("Model already exists locally. Loading...")
+        try:
+            model = load_model(MODEL_PATH)
+            st.success("rPPG model loaded successfully.")
+            return model
+        except Exception as e:
+            st.error(f"Could not load model: {str(e)}")
+            raise e
+    
+    # Only download if model doesn't exist
+    try:
+        DRIVE_FILE_ID = st.secrets.get("DRIVE_FILE_ID", "1amZ-gOSjoHDm-Kr0O6xYBbOqiUzsX2wK")
+    except:
+        DRIVE_FILE_ID = "1amZ-gOSjoHDm-Kr0O6xYBbOqiUzsX2wK"
+    
+    st.warning("Model not found locally. Downloading from secure cloud storage...")
+    try:
+        url = f"https://drive.google.com/uc?id={DRIVE_FILE_ID}"
+        
+        with contextlib.redirect_stdout(StringIO()), contextlib.redirect_stderr(StringIO()):
+            gdown.download(url, MODEL_PATH, quiet=True, fuzzy=True)
+        
+        st.success("Model downloaded successfully.")
+    except Exception as e:
+        st.error(f"Failed to download model: {str(e)}")
+        st.info(f"Please download manually and place as '{MODEL_PATH}'")
+        raise e
+    
+    # Load the newly downloaded model
+    try:
+        model = load_model(MODEL_PATH)
+        st.success("rPPG model loaded successfully.")
+        return model
+    except Exception as e:
+        st.error(f"Could not load model: {str(e)}")
+        raise e
+        
+# -----
+# RPPGProcessor class
+# -----
 
 class RPPGProcessor:
     def __init__(self, session_duration):
@@ -32,15 +90,21 @@ class RPPGProcessor:
         self.all_bp_values = []
         self.all_timestamps = []
         self.signal_buffer = deque(maxlen=150)
-
+        
+        # Secure model loading
+        self.model =load_rppg_model()
+        
+        #----eraise it 
+           
         # Load model
-        try:
-            self.model = load_model("best_rppg_model.h5")  # Adjusted path to root directory
-            st.success("rPPG model loaded successfully")
-        except Exception as e:
-            st.error(f"Error: Could not load model: {str(e)}. Exiting.")
-            raise Exception("Model loading failed")
-
+        # try:
+        #     self.model = load_model("best_rppg_model.h5")  # Adjusted path to root directory
+        #     st.success("rPPG model loaded successfully")
+        # except Exception as e:
+        #     st.error(f"Error: Could not load model: {str(e)}. Exiting.")
+        #     raise Exception("Model loading failed")
+        # ------
+        
         # Setup plotting
         self.fig, self.ax = plt.subplots(2, 1, figsize=(6, 4))
         self.hr_line, = self.ax[0].plot([], [], 'g-', linewidth=2)
@@ -54,6 +118,7 @@ class RPPGProcessor:
         self.ax[1].set_xlabel("Time (s)")
         self.ax[1].grid(True)
         plt.tight_layout()
+
 
     def load_video(self, video_file):
         """Load uploaded video file"""
