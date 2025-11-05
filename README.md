@@ -5,6 +5,15 @@
 <h1 align="center">❤️ HeartVision AI — rPPG-based Heart Rate & BP Monitor</h1>
 <h3 align="center">Non-contact health monitoring using deep learning and remote photoplethysmography (rPPG)</h3>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/TensorFlow-2.15-orange?logo=tensorflow" />
+  <img src="https://img.shields.io/badge/Streamlit-Cloud-red?logo=streamlit" />
+  <img src="https://img.shields.io/badge/OpenCV-Computer_Vision-green?logo=opencv" />
+  <img src="https://img.shields.io/badge/Status-Deployed-success?logo=github" />
+</p>
+
+
 ---
 
 ## 📖 Overview
@@ -116,13 +125,26 @@ def load_rppg_model():
         gdown.download(f"https://drive.google.com/uc?id={DRIVE_FILE_ID}", "best_rppg_model.h5")
         return load_model("best_rppg_model.h5")
 
-📊 Output Example
+## 🖥️ Application Preview
 
-Heart Rate: 75.4 BPM
+### 🧩 App Interface
+This is the main Streamlit interface where users upload a video and set session duration.
 
-Blood Pressure: 118 / 79 mmHg
+<p align="center">
+  <img src="images/App Interface.png" alt="App Interface" width="800"/>
+</p>
 
-Session Duration: 60 seconds
+---
+
+### ❤️ Real-time Processing & Final Report
+Once the video is processed, HeartVision AI tracks face landmarks, extracts color signals, and predicts heart rate and blood pressure using the rPPG model.
+
+<p align="center">
+  <img src="images/Processing Results.png" alt="Processing Results" width="800"/>
+</p>
+
+> 💡 The app generates real-time plots for Heart Rate (BPM) and Systolic BP (mmHg), followed by a downloadable final report in CSV and PDF formats.
+
 
 The app provides:
 
