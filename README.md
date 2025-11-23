@@ -131,7 +131,7 @@ def load_rppg_model():
 This is the main Streamlit interface where users upload a video and set session duration.
 
 <p align="center">
-  <img src="images/App Interface.png" alt="App Interface" width="800"/>
+  <img src="images/App_Interface.png" alt="App Interface" width="800"/>
 </p>
 
 ---
